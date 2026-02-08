@@ -7,11 +7,10 @@ from .config import settings
 
 
 # Create database engine
-# The DATABASE_URL should be set in .env
 engine = create_engine(
     settings.database_url,
-    echo=False,  # Set to True for SQL query debugging
-    pool_pre_ping=True,  # Verify connections before using
+    echo=False,
+    pool_pre_ping=True,
 )
 
 
