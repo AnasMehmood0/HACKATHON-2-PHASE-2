@@ -1,0 +1,14 @@
+[project]
+name = "h2-phase"
+version = "0.1.0"
+description = "Evolution of Todo - Phase I: In-Memory Python Console Todo App"
+requires-python = ">=3.12"
+dependencies = []
+
+[project.scripts]
+todo = "src.main:main"
+
+[tool.uv.workspace]
+members = [
+    "backend",
+]
