@@ -8,6 +8,36 @@ Your app has 2 parts that need to be deployed separately:
 
 ---
 
+## STEP 0: Get Your API Keys First!
+
+Before deploying, you need these things:
+
+### A. Google OAuth (for Google Sign-In) ⭐ IMPORTANT!
+
+1. Go to **[console.cloud.google.com](https://console.cloud.google.com)**
+2. Create a new project (or select existing)
+3. Go to **APIs & Services** → **Credentials**
+4. Click **"Create Credentials"** → **"OAuth client ID"**
+5. Select **"Web application"**
+6. Add these **Authorized redirect URIs**:
+   - `http://localhost:3000/api/auth/callback/google` (for local)
+   - `https://YOUR-VERCEL-APP.vercel.app/api/auth/callback/google` (for production - add later)
+7. Copy your **Client ID** and **Client Secret**
+
+### B. Neon PostgreSQL (Database)
+
+1. Go to **[neon.tech](https://neon.tech)**
+2. Sign up and create a free project
+3. Copy the **Connection string**
+
+### C. Gemini API Key (for AI Chatbot)
+
+1. Go to **[makersuite.google.com](https://makersuite.google.com/app/apikey)**
+2. Create an API key
+3. Copy it
+
+---
+
 ## STEP 1: Push Your Code to GitHub
 
 1. Go to **github.com** and create a new repository
@@ -43,6 +73,8 @@ Your app has 2 parts that need to be deployed separately:
    | `DATABASE_URL` | Your Neon PostgreSQL connection string |
    | `BETTER_AUTH_SECRET` | A random 32+ character string |
    | `GEMINI_API_KEY` | Your Gemini API key |
+   | `GOOGLE_CLIENT_ID` | Your Google OAuth Client ID |
+   | `GOOGLE_CLIENT_SECRET` | Your Google OAuth Client Secret |
 
 7. Click **"Create Web Service"**
 8. Wait 5-10 minutes for it to deploy
@@ -50,7 +82,19 @@ Your app has 2 parts that need to be deployed separately:
 
 ---
 
-## STEP 3: Deploy Frontend on Vercel
+## STEP 3: Update Google OAuth Redirect URI
+
+Now that you have your Vercel URL coming, go back to Google Console:
+
+1. Go to **console.cloud.google.com** → **APIs & Services** → **Credentials**
+2. Edit your OAuth 2.0 Client ID
+3. Add your Vercel URL to redirect URIs:
+   - `https://YOUR-VERCEL-APP.vercel.app/api/auth/callback/google`
+4. Save
+
+---
+
+## STEP 4: Deploy Frontend on Vercel
 
 1. Go to **[vercel.com](https://vercel.com)**
 2. Sign up/login with GitHub
@@ -69,19 +113,47 @@ Your app has 2 parts that need to be deployed separately:
    | Key | Value |
    |-----|-------|
    | `NEXT_PUBLIC_API_URL` | Your **Backend URL** from STEP 2 |
+   | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Your Google OAuth Client ID |
+   | `BETTER_AUTH_SECRET` | Same as backend (32+ random chars) |
 
 7. Click **"Deploy"**
 8. Wait 2-3 minutes
 9. Your app is live! 🎉
+10. **Copy your Vercel URL** and go back to STEP 3 to add it to Google Console
 
 ---
 
 ## Quick Summary Checklist
 
+- [ ] Got Google OAuth Client ID & Secret
+- [ ] Got Neon PostgreSQL connection string
+- [ ] Got Gemini API key
 - [ ] Code pushed to GitHub
-- [ ] Backend deployed on Render
+- [ ] Backend deployed on Render with all env vars
 - [ ] Backend URL copied
-- [ ] Frontend deployed on Vercel with `NEXT_PUBLIC_API_URL` set
+- [ ] Frontend deployed on Vercel with all env vars
+- [ ] Vercel URL added to Google Console redirect URIs
+
+---
+
+## Environment Variables Reference
+
+### Backend (Render):
+| Variable | Required? | Description |
+|----------|-----------|-------------|
+| `DATABASE_URL` | ✅ Yes | Neon PostgreSQL connection |
+| `BETTER_AUTH_SECRET` | ✅ Yes | JWT secret (32+ chars) |
+| `GOOGLE_CLIENT_ID` | ✅ Yes | For Google Sign-In |
+| `GOOGLE_CLIENT_SECRET` | ✅ Yes | For Google Sign-In |
+| `GEMINI_API_KEY` | ✅ Yes | For AI chatbot |
+| `OPENAI_API_KEY` | Optional | Backup AI provider |
+
+### Frontend (Vercel):
+| Variable | Required? | Description |
+|----------|-----------|-------------|
+| `NEXT_PUBLIC_API_URL` | ✅ Yes | Backend URL |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | ✅ Yes | Google OAuth Client ID |
+| `BETTER_AUTH_SECRET` | ✅ Yes | Same as backend |
 
 ---
 
@@ -89,11 +161,15 @@ Your app has 2 parts that need to be deployed separately:
 
 1. **Backend must be deployed first** - you need its URL for the frontend
 2. **Free tier limits**: Render free services sleep after 15min of inactivity (takes 30s to wake up)
-3. **DATABASE_URL**: Get your free PostgreSQL from [neon.tech](https://neon.tech)
+3. **Google OAuth**: Make sure redirect URIs match exactly (including `https://`)
 
 ---
 
 ## Troubleshooting
+
+**Problem**: Google Sign-In not working
+- Check redirect URIs in Google Console match your Vercel URL exactly
+- Make sure `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is set in Vercel
 
 **Problem**: Frontend can't connect to backend
 - Check `NEXT_PUBLIC_API_URL` in Vercel settings
