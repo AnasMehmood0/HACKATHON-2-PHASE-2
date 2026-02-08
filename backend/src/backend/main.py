@@ -1,5 +1,6 @@
 # T014: FastAPI application with CORS middleware
 
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -10,54 +11,67 @@ from .db import init_db, health_check, engine
 from .models import User
 from .routes import tasks, auth, chat, oauth, users
 
+# Check if running in serverless environment (Vercel/Lambda)
+IS_SERVERLESS = os.getenv("AWS_LAMBDA_FUNCTION_VERSION") or os.getenv("VERCEL")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     """
     Application lifespan manager.
     Initializes database on startup.
+    Skips initialization in serverless environments.
     """
-    # Startup
-    print("Initializing database...")
-    init_db()
-    print("Database initialized successfully")
+    # Startup - only run if NOT in serverless
+    if not IS_SERVERLESS:
+        print("Initializing database...")
+        init_db()
+        print("Database initialized successfully")
 
-    # Seed dev user for testing
-    from .auth import DEV_MODE
-    if DEV_MODE:
-        print("Seeding dev user...")
-        with Session(engine) as session:
-            dev_user = session.get(User, "dev-user-123")
-            if not dev_user:
-                dev_user = User(
-                    id="dev-user-123",
-                    email="dev@example.com",
-                    name="Dev User"
-                )
-                session.add(dev_user)
-                session.commit()
-                print("Dev user created: dev-user-123")
-            else:
-                print("Dev user already exists")
+        # Seed dev user for testing
+        from .auth import DEV_MODE
+        if DEV_MODE:
+            print("Seeding dev user...")
+            with Session(engine) as session:
+                dev_user = session.get(User, "dev-user-123")
+                if not dev_user:
+                    dev_user = User(
+                        id="dev-user-123",
+                        email="dev@example.com",
+                        name="Dev User"
+                    )
+                    session.add(dev_user)
+                    session.commit()
+                    print("Dev user created: dev-user-123")
+                else:
+                    print("Dev user already exists")
 
     yield
 
     # Shutdown
-    print("Shutting down application...")
+    if not IS_SERVERLESS:
+        print("Shutting down application...")
 
 
 # Create FastAPI application
+# In serverless, don't use lifespan (it's handled per-request)
 app = FastAPI(
     title="Todo App API",
     description="REST API for the Evolution of Todo - Phase II",
     version="2.0.0",
-    lifespan=lifespan,
+    lifespan=None if IS_SERVERLESS else lifespan,
 )
 
 # Configure CORS middleware
+# Allow all origins in production, specific origins in dev
+cors_origins = settings.cors_origins
+if IS_SERVERLESS:
+    # In production, allow your frontend domain
+    cors_origins = ["*"]  # You can restrict this later
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=cors_origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
