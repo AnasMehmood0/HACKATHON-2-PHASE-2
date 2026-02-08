@@ -34,10 +34,10 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # Database
+    # Database (required)
     database_url: str
 
-    # JWT Authentication
+    # JWT Authentication (required)
     better_auth_secret: str
 
     # Server (use PORT from cloud providers like Render/Railway)
@@ -48,8 +48,13 @@ class Settings(BaseSettings):
     cors_origins: list[str] = ["http://localhost:3000", "http://localhost:3001"]
 
     # AI API (supports both GEMINI_API_KEY and OPENAI_API_KEY)
-    gemini_api_key: str
-    openai_api_key: str
+    # Made optional with default values for deployment
+    gemini_api_key: str = ""
+    openai_api_key: str = ""
+
+    # Google OAuth (optional)
+    google_client_id: str = ""
+    google_client_secret: str = ""
 
     @property
     def jwt_algorithm(self) -> str:
