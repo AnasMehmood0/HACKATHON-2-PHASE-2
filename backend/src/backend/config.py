@@ -40,12 +40,12 @@ class Settings(BaseSettings):
     # JWT Authentication
     better_auth_secret: str
 
-    # Server
-    backend_port: int = 8000
+    # Server (use PORT from cloud providers like Render/Railway)
+    backend_port: int = int(os.getenv("PORT", "8000"))
     backend_host: str = "0.0.0.0"
 
-    # CORS
-    cors_origins: list[str] = ["http://localhost:3000"]
+    # CORS (will be updated based on environment)
+    cors_origins: list[str] = ["http://localhost:3000", "http://localhost:3001"]
 
     # AI API (supports both GEMINI_API_KEY and OPENAI_API_KEY)
     gemini_api_key: str
