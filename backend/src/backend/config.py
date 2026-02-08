@@ -34,25 +34,24 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # Database (required)
+    # Database
     database_url: str
 
-    # JWT Authentication (required)
+    # JWT Authentication
     better_auth_secret: str
 
-    # Server (use PORT from cloud providers like Render/Railway)
-    backend_port: int = int(os.getenv("PORT", "8000"))
+    # Server
+    backend_port: int = 8000
     backend_host: str = "0.0.0.0"
 
-    # CORS (will be updated based on environment)
+    # CORS
     cors_origins: list[str] = ["http://localhost:3000", "http://localhost:3001"]
 
     # AI API (supports both GEMINI_API_KEY and OPENAI_API_KEY)
-    # Made optional with default values for deployment
     gemini_api_key: str = ""
     openai_api_key: str = ""
 
-    # Google OAuth (optional)
+    # Google OAuth
     google_client_id: str = ""
     google_client_secret: str = ""
 

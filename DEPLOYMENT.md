@@ -1,72 +1,71 @@
-# Deployment Guide - Simple Step-by-Step
+# Vercel Deployment Guide
 
-## Overview
-
-Your app has 2 parts that need to be deployed separately:
-- **Backend** (Python/FastAPI) → Deploy on **Render** (free)
-- **Frontend** (Next.js) → Deploy on **Vercel** (free)
+Deploy both Backend (FastAPI) and Frontend (Next.js) on Vercel.
 
 ---
 
-## STEP 0: Get Your API Keys First!
+## Overview
 
-Before deploying, you need these things:
+| Part | Directory | Vercel Project Name |
+|------|-----------|---------------------|
+| Backend | `backend/` | `todo-backend` |
+| Frontend | `frontend/` | `todo-frontend` |
 
-### A. Google OAuth (for Google Sign-In) ⭐ IMPORTANT!
+---
+
+## STEP 0: Get Your API Keys First
+
+### A. Google OAuth (for Google Sign-In)
 
 1. Go to **[console.cloud.google.com](https://console.cloud.google.com)**
-2. Create a new project (or select existing)
-3. Go to **APIs & Services** → **Credentials**
-4. Click **"Create Credentials"** → **"OAuth client ID"**
-5. Select **"Web application"**
-6. Add these **Authorized redirect URIs**:
-   - `http://localhost:3000/api/auth/callback/google` (for local)
-   - `https://YOUR-VERCEL-APP.vercel.app/api/auth/callback/google` (for production - add later)
-7. Copy your **Client ID** and **Client Secret**
+2. **APIs & Services** → **Credentials**
+3. **Create Credentials** → **"OAuth client ID"**
+4. Select **"Web application"**
+5. Add **Authorized redirect URIs**:
+   - `http://localhost:3000/api/auth/callback/google` (local)
+   - `https://todo-frontend.vercel.app/api/auth/callback/google` (production - update after deploy)
+6. Copy **Client ID** and **Client Secret**
 
 ### B. Neon PostgreSQL (Database)
 
 1. Go to **[neon.tech](https://neon.tech)**
-2. Sign up and create a free project
-3. Copy the **Connection string**
+2. Create free project
+3. Copy **Connection string**
 
-### C. Gemini API Key (for AI Chatbot)
+### C. Gemini API Key
 
 1. Go to **[makersuite.google.com](https://makersuite.google.com/app/apikey)**
-2. Create an API key
+2. Create API key
 3. Copy it
 
 ---
 
-## STEP 1: Push Your Code to GitHub
+## STEP 1: Push to GitHub
 
-1. Go to **github.com** and create a new repository
-2. Push your code:
-   ```bash
-   git add .
-   git commit -m "Ready for deployment"
-   git push
-   ```
+```bash
+git add .
+git commit -m "Ready for Vercel deployment"
+git push
+```
 
 ---
 
-## STEP 2: Deploy Backend on Render (Free)
+## STEP 2: Deploy Backend on Vercel
 
-1. Go to **[render.com](https://render.com)**
-2. Sign up/login with GitHub
-3. Click **"New +"** → **"Web Service"**
-4. Connect your GitHub repository
-5. Fill in the form:
+1. Go to **[vercel.com](https://vercel.com)**
+2. Click **"Add New..."** → **"Project"**
+3. Import your GitHub repository
+4. Configure:
 
    | Setting | Value |
    |---------|-------|
-   | Name | `todo-backend` (any name you want) |
-   | Root Directory | `backend` |
-   | Runtime | `Python 3` |
-   | Build Command | `pip install -r requirements.txt` |
-   | Start Command | `uvicorn backend.main:app --host 0.0.0.0 --port $PORT` |
+   | **Project Name** | `todo-backend` |
+   | **Root Directory** | `backend` |
+   | **Framework Preset** | `Other` |
+   | **Build Command** | `pip install -r requirements.txt` |
+   | **Output Directory** | `.` |
 
-6. **Add Environment Variables** (scroll down to "Advanced"):
+5. **Add Environment Variables**:
 
    | Key | Value |
    |-----|-------|
@@ -76,39 +75,28 @@ Before deploying, you need these things:
    | `GOOGLE_CLIENT_ID` | Your Google OAuth Client ID |
    | `GOOGLE_CLIENT_SECRET` | Your Google OAuth Client Secret |
 
-7. Click **"Create Web Service"**
-8. Wait 5-10 minutes for it to deploy
-9. **Copy your backend URL** (looks like: `https://todo-backend.onrender.com`)
+6. Click **"Deploy"**
+7. Wait for deployment to complete
+8. **Copy your backend URL** (e.g., `https://todo-backend.vercel.app`)
 
 ---
 
-## STEP 3: Update Google OAuth Redirect URI
-
-Now that you have your Vercel URL coming, go back to Google Console:
-
-1. Go to **console.cloud.google.com** → **APIs & Services** → **Credentials**
-2. Edit your OAuth 2.0 Client ID
-3. Add your Vercel URL to redirect URIs:
-   - `https://YOUR-VERCEL-APP.vercel.app/api/auth/callback/google`
-4. Save
-
----
-
-## STEP 4: Deploy Frontend on Vercel
+## STEP 3: Deploy Frontend on Vercel
 
 1. Go to **[vercel.com](https://vercel.com)**
-2. Sign up/login with GitHub
-3. Click **"Add New..."** → **"Project"**
-4. Import your GitHub repository
-5. Configure:
+2. Click **"Add New..."** → **"Project"**
+3. Import the **same** GitHub repository
+4. Configure:
 
    | Setting | Value |
    |---------|-------|
-   | Framework Preset | `Next.js` |
-   | Root Directory | `frontend` |
-   | Build Command | `npm run build` (auto-filled) |
+   | **Project Name** | `todo-frontend` |
+   | **Root Directory** | `frontend` |
+   | **Framework Preset** | `Next.js` |
+   | **Build Command** | `npm run build` |
+   | **Output Directory** | `.next` |
 
-6. **Add Environment Variables**:
+5. **Add Environment Variables**:
 
    | Key | Value |
    |-----|-------|
@@ -116,69 +104,53 @@ Now that you have your Vercel URL coming, go back to Google Console:
    | `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | Your Google OAuth Client ID |
    | `BETTER_AUTH_SECRET` | Same as backend (32+ random chars) |
 
-7. Click **"Deploy"**
-8. Wait 2-3 minutes
-9. Your app is live! 🎉
-10. **Copy your Vercel URL** and go back to STEP 3 to add it to Google Console
+6. Click **"Deploy"**
+7. Wait for deployment to complete
+8. Your app is live! 🎉
 
 ---
 
-## Quick Summary Checklist
+## STEP 4: Update Google OAuth Redirect
 
-- [ ] Got Google OAuth Client ID & Secret
-- [ ] Got Neon PostgreSQL connection string
-- [ ] Got Gemini API key
-- [ ] Code pushed to GitHub
-- [ ] Backend deployed on Render with all env vars
-- [ ] Backend URL copied
-- [ ] Frontend deployed on Vercel with all env vars
-- [ ] Vercel URL added to Google Console redirect URIs
+1. Go to **[console.cloud.google.com](https://console.cloud.google.com)**
+2. Edit your OAuth Client ID
+3. Add this redirect URI:
+   - `https://todo-frontend.vercel.app/api/auth/callback/google`
+4. Save
 
 ---
 
-## Environment Variables Reference
+## Environment Variables Summary
 
-### Backend (Render):
+### Backend (todo-backend):
 | Variable | Required? | Description |
 |----------|-----------|-------------|
-| `DATABASE_URL` | ✅ Yes | Neon PostgreSQL connection |
-| `BETTER_AUTH_SECRET` | ✅ Yes | JWT secret (32+ chars) |
-| `GOOGLE_CLIENT_ID` | ✅ Yes | For Google Sign-In |
-| `GOOGLE_CLIENT_SECRET` | ✅ Yes | For Google Sign-In |
-| `GEMINI_API_KEY` | ✅ Yes | For AI chatbot |
-| `OPENAI_API_KEY` | Optional | Backup AI provider |
+| `DATABASE_URL` | ✅ Yes | Neon PostgreSQL |
+| `BETTER_AUTH_SECRET` | ✅ Yes | JWT secret |
+| `GOOGLE_CLIENT_ID` | ✅ Yes | Google Sign-In |
+| `GOOGLE_CLIENT_SECRET` | ✅ Yes | Google Sign-In |
+| `GEMINI_API_KEY` | ✅ Yes | AI chatbot |
 
-### Frontend (Vercel):
+### Frontend (todo-frontend):
 | Variable | Required? | Description |
 |----------|-----------|-------------|
 | `NEXT_PUBLIC_API_URL` | ✅ Yes | Backend URL |
-| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | ✅ Yes | Google OAuth Client ID |
+| `NEXT_PUBLIC_GOOGLE_CLIENT_ID` | ✅ Yes | Google OAuth |
 | `BETTER_AUTH_SECRET` | ✅ Yes | Same as backend |
-
----
-
-## Important Notes
-
-1. **Backend must be deployed first** - you need its URL for the frontend
-2. **Free tier limits**: Render free services sleep after 15min of inactivity (takes 30s to wake up)
-3. **Google OAuth**: Make sure redirect URIs match exactly (including `https://`)
 
 ---
 
 ## Troubleshooting
 
+**Problem**: Backend returns 500 error
+- Check Vercel logs for the backend
+- Make sure all environment variables are set
+- Verify DATABASE_URL is correct
+
 **Problem**: Google Sign-In not working
-- Check redirect URIs in Google Console match your Vercel URL exactly
-- Make sure `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is set in Vercel
+- Check redirect URIs in Google Console match exactly
+- Make sure `NEXT_PUBLIC_GOOGLE_CLIENT_ID` is set in frontend
 
 **Problem**: Frontend can't connect to backend
-- Check `NEXT_PUBLIC_API_URL` in Vercel settings
-- Make sure backend URL includes `https://` (not `http://`)
-
-**Problem**: Backend crashes on startup
-- Check Render logs for the error
-- Make sure all environment variables are set correctly
-
-**Problem**: Database connection error
-- Verify your `DATABASE_URL` is correct
-- Make sure your Neon database is not paused
+- Verify `NEXT_PUBLIC_API_URL` is correct
+- Make sure backend is deployed successfully
