@@ -20,6 +20,7 @@ class OAuthCallbackRequest(BaseModel):
     code: str
     state: str
     provider: str = "google"
+    redirect_uri: str | None = None  # Allow frontend to specify redirect URI
 
 
 class GoogleTokenResponse(BaseModel):
@@ -50,6 +51,9 @@ async def google_oauth_callback(
     Exchange authorization code for user info and create/update user session.
     """
     try:
+        # Determine redirect URI - use provided one or fallback to localhost
+        redirect_uri = request.redirect_uri or "http://localhost:3000/api/auth/callback/google"
+
         # Exchange code for access token
         async with httpx.AsyncClient() as client:
             token_response = await client.post(
@@ -58,7 +62,7 @@ async def google_oauth_callback(
                     "code": request.code,
                     "client_id": os.getenv("GOOGLE_CLIENT_ID"),
                     "client_secret": os.getenv("GOOGLE_CLIENT_SECRET"),
-                    "redirect_uri": "http://localhost:3000/api/auth/callback/google",
+                    "redirect_uri": redirect_uri,
                     "grant_type": "authorization_code",
                 },
                 headers={
