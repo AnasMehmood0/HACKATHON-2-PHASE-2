@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') || "http://localhost:8000";
+const BACKEND_URL = "https://anas-khan09-todo-backend.hf.space";
 
 export async function GET(request: NextRequest) {
   try {

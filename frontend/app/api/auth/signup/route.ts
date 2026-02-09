@@ -2,15 +2,10 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-
 export async function POST(request: NextRequest) {
   try {
-    console.log('[Signup] Environment check:', {
-      NODE_ENV: process.env.NODE_ENV,
-      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-      BACKEND_URL
-    });
+    // Hardcoded backend URL for production
+    const BACKEND_URL = "https://anas-khan09-todo-backend.hf.space";
 
     const body = await request.json();
     const { email, password, name } = body;
@@ -20,7 +15,6 @@ export async function POST(request: NextRequest) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Origin": request.nextUrl.origin
       },
       body: JSON.stringify({ email, password, name }),
     });
@@ -31,25 +25,26 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: data.detail || "Sign up failed" }, { status: res.status });
     }
 
-    // Create response and clear signed-out flag
+    // Create response
     const response = NextResponse.json({ success: true, user: data.user });
 
     // Set session cookie with token from backend
     if (data.token) {
       response.cookies.set("session", data.token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "lax",
         path: "/",
-        maxAge: 60 * 60 * 24 * 7, // 1 week
+        maxAge: 60 * 60 * 24 * 7,
       });
     }
 
-    // Clear signed-out flag
-    response.cookies.delete("signed-out");
-
     return response;
   } catch (error) {
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error('[Signup] Error:', error);
+    return NextResponse.json(
+      { error: error instanceof Error ? error.message : "Internal server error" },
+      { status: 500 }
+    );
   }
 }

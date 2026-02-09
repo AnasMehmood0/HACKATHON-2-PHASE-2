@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') || "http://localhost:8000";
+const BACKEND_URL = "https://anas-khan09-todo-backend.hf.space";
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
     const data = await response.json();
 
-    // Set session cookie
+    // Set session cookie and redirect
     const redirectUrl = new URL("/dashboard", request.url);
     const nextResponse = NextResponse.redirect(redirectUrl);
 
@@ -47,7 +47,7 @@ export async function GET(request: NextRequest) {
     if (data.sessionToken) {
       nextResponse.cookies.set("session", data.sessionToken, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: true,
         sameSite: "lax",
         maxAge: 60 * 60 * 24 * 7, // 1 week
         path: "/",
