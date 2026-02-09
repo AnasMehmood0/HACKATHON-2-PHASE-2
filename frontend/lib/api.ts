@@ -164,6 +164,45 @@ class APIClient {
       body: data ? JSON.stringify(data) : undefined,
     });
   }
+
+  /**
+   * Chat - Send message to AI
+   */
+  async chat(message: string, conversationId?: number): Promise<{
+    response: string;
+    conversation_id: number;
+    tool_calls?: any[];
+  }> {
+    const body: any = { message };
+    if (conversationId) {
+      body.conversation_id = conversationId;
+    }
+    return this.request("/api/chat", {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+  }
+
+  /**
+   * Get all conversations
+   */
+  async getConversations(): Promise<any[]> {
+    return this.get("/api/conversations");
+  }
+
+  /**
+   * Get specific conversation
+   */
+  async getConversation(id: number): Promise<any> {
+    return this.get(`/api/conversations/${id}`);
+  }
+
+  /**
+   * Delete conversation
+   */
+  async deleteConversation(id: number): Promise<void> {
+    return this.delete(`/api/conversations/${id}`);
+  }
 }
 
 // Export singleton instance

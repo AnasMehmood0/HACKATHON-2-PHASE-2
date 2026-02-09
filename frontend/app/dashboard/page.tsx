@@ -20,6 +20,7 @@ import {
   MoreHorizontal,
 } from "lucide-react";
 import { api } from "@/lib/api";
+import { ChatPanel } from "@/components/ChatPanel";
 
 interface Task {
   id: number;
@@ -912,6 +913,9 @@ export default function DashboardPage() {
           </div>
         </div>
       </main>
+
+      {/* AI Chat Panel */}
+      <ChatPanel />
 
       {/* Create/Edit Modal */}
       {showForm && (
