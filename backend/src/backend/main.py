@@ -14,6 +14,9 @@ from .routes import tasks, auth, chat, oauth, users
 # Check if running in serverless environment (Vercel/Lambda)
 IS_SERVERLESS = os.getenv("AWS_LAMBDA_FUNCTION_VERSION") or os.getenv("VERCEL")
 
+# Check if running in Hugging Face Spaces (PORT env is set by HF)
+IS_HF_SPACES = os.getenv("PORT") or os.getenv("SPACE_ID")
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -116,11 +119,14 @@ def main():
     """Entry point for running the server directly."""
     import uvicorn
 
+    # Hugging Face Spaces uses PORT env var, default to 7860
+    port = int(os.getenv("PORT", settings.backend_port))
+
     uvicorn.run(
         "backend.main:app",
         host=settings.backend_host,
-        port=settings.backend_port,
-        reload=True,
+        port=port,
+        reload=not IS_HF_SPACES,  # Disable reload in production
     )
 
 
