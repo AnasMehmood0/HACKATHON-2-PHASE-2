@@ -29,13 +29,16 @@ async function getToken(): Promise<string | null> {
 /**
  * Base API client for backend communication
  * Automatically attaches JWT token to requests
+ * Always uses relative URLs to go through Next.js API routes
  */
 class APIClient {
   private baseURL: string;
 
   constructor() {
-    // Use hardcoded backend URL for production, env var for local dev
-    this.baseURL = process.env.NEXT_PUBLIC_API_URL || window.location.origin;
+    // Always use relative URLs - let the request go through Next.js API routes
+    // In browser: empty string means relative URL (goes to same origin)
+    // In server side: not used
+    this.baseURL = typeof window !== "undefined" ? "" : process.env.NEXT_PUBLIC_API_URL || "";
   }
 
   /**
@@ -45,7 +48,8 @@ class APIClient {
     endpoint: string,
     options: RequestInit = {},
   ): Promise<T> {
-    const url = `${this.baseURL}${endpoint}`;
+    // Use relative URL - goes through Next.js API routes
+    const url = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
 
     // Debug logging
     if (typeof window !== "undefined") {
@@ -132,7 +136,8 @@ class APIClient {
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(`${this.baseURL}${endpoint}`, {
+    const url = endpoint.startsWith("/") ? endpoint : `/${endpoint}`;
+    const response = await fetch(url, {
       method: "DELETE",
       headers,
     });
