@@ -1,0 +1,268 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.5rem;
+
+  /* Premium Business Theme - Light Mode */
+
+  /* Background - Off-white for reduced eye strain */
+  --background: 210 20% 98%; /* #FAFAFA */
+  --foreground: 215 25% 27%; /* Dark slate #1E293B */
+
+  /* Card components with subtle appearance */
+  --card: 0 0% 100%; /* Pure white */
+  --card-foreground: 215 25% 27%; /* Dark slate */
+
+  /* Popover/Tooltip */
+  --popover: 0 0% 100%; /* White */
+  --popover-foreground: 215 25% 27%; /* Dark slate */
+
+  /* Primary - Deep Navy Blue */
+  --primary: 215 45% 12%; /* #0A1628 - Deep navy */
+  --primary-foreground: 0 0% 100%; /* White text */
+
+  /* Secondary - Subtle gray */
+  --secondary: 210 20% 94%; /* Very light gray */
+  --secondary-foreground: 215 25% 27%; /* Dark slate */
+
+  /* Muted backgrounds */
+  --muted: 210 20% 96%; /* Off-white */
+  --muted-foreground: 215 20% 40%; /* Softer gray #64748B */
+
+  /* Accent - Gold/Amber for premium feel */
+  --accent: 35 90% 58%; /* #F59E0B - Gold/Amber */
+  --accent-foreground: 215 45% 12%; /* Navy text */
+
+  /* Destructive/Error - Rose */
+  --destructive: 350 89% 60%; /* #EF4444 - Rose */
+  --destructive-foreground: 0 0% 100%; /* White */
+
+  /* Success state */
+  --success: 158 64% 52%; /* #10B981 - Emerald green */
+
+  /* Warning state */
+  --warning: 35 90% 58%; /* #F59E0B - Amber */
+
+  /* Borders and inputs - Very subtle */
+  --border: 210 25% 90%; /* #E2E8F0 */
+  --input: 210 25% 90%; /* #E2E8F0 */
+
+  /* Focus ring - Navy blue for consistency */
+  --ring: 215 45% 12%; /* Navy */
+
+  /* Chart colors - Premium business palette */
+  --chart-1: 215 45% 12%; /* Navy */
+  --chart-2: 35 90% 58%; /* Gold */
+  --chart-3: 158 64% 52%; /* Emerald */
+  --chart-4: 215 20% 40%; /* Gray */
+  --chart-5: 350 89% 60%; /* Rose */
+
+  /* Sidebar - Professional styling */
+  --sidebar: 0 0% 100%; /* White */
+  --sidebar-foreground: 215 25% 27%; /* Dark slate */
+  --sidebar-primary: 215 45% 12%; /* Navy */
+  --sidebar-primary-foreground: 0 0% 100%; /* White */
+  --sidebar-accent: 210 20% 94%; /* Light gray */
+  --sidebar-accent-foreground: 215 25% 27%; /* Dark slate */
+  --sidebar-border: 210 25% 90%; /* Subtle border */
+  --sidebar-ring: 215 45% 12%; /* Navy */
+}
+
+.dark {
+  /* Premium Business Theme - Dark Mode */
+
+  /* Background - Deep navy */
+  --background: 215 45% 8%; /* Very dark navy */
+  --foreground: 210 20% 98%; /* Light slate */
+
+  /* Card components */
+  --card: 215 45% 12%; /* Navy */
+  --card-foreground: 210 20% 98%; /* Light slate */
+
+  /* Popover/Tooltip */
+  --popover: 215 45% 12%; /* Navy */
+  --popover-foreground: 210 20% 98%; /* Light slate */
+
+  /* Primary - Lighter navy for contrast */
+  --primary: 215 35% 20%; /* Lighter navy */
+  --primary-foreground: 0 0% 100%; /* White */
+
+  /* Secondary */
+  --secondary: 215 30% 18%; /* Darker navy */
+  --secondary-foreground: 210 20% 98%; /* Light slate */
+
+  /* Muted backgrounds */
+  --muted: 215 30% 18%; /* Dark navy */
+  --muted-foreground: 210 15% 65%; /* Medium gray */
+
+  /* Accent - Gold maintains premium feel */
+  --accent: 35 90% 58%; /* Gold */
+  --accent-foreground: 215 45% 8%; /* Dark background */
+
+  /* Destructive/Error */
+  --destructive: 350 79% 63%; /* Lighter rose */
+  --destructive-foreground: 0 0% 100%; /* White */
+
+  /* Success state */
+  --success: 158 64% 62%; /* Lighter emerald */
+
+  /* Warning state */
+  --warning: 35 90% 65%; /* Lighter amber */
+
+  /* Borders and inputs */
+  --border: 215 25% 20%; /* Subtle navy border */
+  --input: 215 25% 20%; /* Navy input */
+
+  /* Focus ring */
+  --ring: 215 35% 40%; /* Lighter navy */
+
+  /* Chart colors - Adjusted for dark mode */
+  --chart-1: 215 35% 40%; /* Light navy */
+  --chart-2: 35 90% 65%; /* Light gold */
+  --chart-3: 158 64% 62%; /* Light emerald */
+  --chart-4: 210 15% 65%; /* Gray */
+  --chart-5: 350 79% 63%; /* Light rose */
+
+  /* Sidebar */
+  --sidebar: 215 45% 8%; /* Very dark navy */
+  --sidebar-foreground: 210 20% 98%; /* Light slate */
+  --sidebar-primary: 215 35% 40%; /* Light navy */
+  --sidebar-primary-foreground: 0 0% 100%; /* White */
+  --sidebar-accent: 215 30% 18%; /* Dark navy */
+  --sidebar-accent-foreground: 210 20% 98%; /* Light slate */
+  --sidebar-border: 215 25% 20%; /* Navy border */
+  --sidebar-ring: 215 35% 40%; /* Light navy */
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom utility classes for premium business styling */
+@layer utilities {
+  /* Premium card shadows */
+  .shadow-premium-sm {
+    box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  }
+
+  .shadow-premium-md {
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  }
+
+  .shadow-premium-lg {
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+  }
+
+  /* Premium focus states */
+  .focus-premium:focus {
+    outline: 2px solid hsl(215 45% 12%);
+    outline-offset: 2px;
+  }
+
+  /* Success, warning, error utility classes */
+  .text-success {
+    color: hsl(158 64% 52%);
+  }
+
+  .text-warning {
+    color: hsl(35 90% 58%);
+  }
+
+  .text-error {
+    color: hsl(350 89% 60%);
+  }
+
+  .bg-success {
+    background-color: hsl(158 64% 52%);
+  }
+
+  .bg-warning {
+    background-color: hsl(35 90% 58%);
+  }
+
+  .bg-error {
+    background-color: hsl(350 89% 60%);
+  }
+
+  .border-success {
+    border-color: hsl(158 64% 52%);
+  }
+
+  .border-warning {
+    border-color: hsl(35 90% 58%);
+  }
+
+  .border-error {
+    border-color: hsl(350 89% 60%);
+  }
+}
