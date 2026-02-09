@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, '') || "http://localhost:8000";
+
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const code = searchParams.get("code");
@@ -20,11 +22,14 @@ export async function GET(request: NextRequest) {
   }
 
   try {
+    // Get the actual redirect URI that Google used
+    const redirectUri = `${request.nextUrl.protocol}//${request.nextUrl.host}/api/auth/callback/google`;
+
     // Exchange code for tokens with backend
-    const response = await fetch("http://localhost:8000/api/auth/oauth/google", {
+    const response = await fetch(`${BACKEND_URL}/api/auth/oauth/google`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ code, state }),
+      body: JSON.stringify({ code, state, redirect_uri: redirectUri }),
     });
 
     if (!response.ok) {
@@ -40,7 +45,7 @@ export async function GET(request: NextRequest) {
 
     // Set session cookie from backend
     if (data.sessionToken) {
-      nextResponse.cookies.set("better-auth.session_token", data.sessionToken, {
+      nextResponse.cookies.set("session", data.sessionToken, {
         httpOnly: true,
         secure: process.env.NODE_ENV === "production",
         sameSite: "lax",

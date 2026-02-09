@@ -390,11 +390,11 @@ export default function CalendarPage() {
     gap: "8px",
   };
 
-  const dayCellStyle: React.CSSProperties = (
+  const dayCellStyle = (
     isCurrentMonth: boolean,
     isToday: boolean,
     isSelected: boolean
-  ) => ({
+  ): React.CSSProperties => ({
     aspectRatio: "1",
     borderRadius: "12px",
     border: isToday ? "2px solid #f59e0b" : isSelected ? "2px solid #0a1628" : "1px solid #e2e8f0",
@@ -409,7 +409,7 @@ export default function CalendarPage() {
     opacity: isCurrentMonth ? 1 : 0.4,
   });
 
-  const dayNumberStyle: React.CSSProperties = (isSelected: boolean) => ({
+  const dayNumberStyle = (isSelected: boolean): React.CSSProperties => ({
     fontSize: "14px",
     fontWeight: "600",
     color: isSelected ? "#0a1628" : "#0a1628",
@@ -422,7 +422,7 @@ export default function CalendarPage() {
     gap: "3px",
   };
 
-  const taskDotStyle: React.CSSProperties = (completed: boolean) => ({
+  const taskDotStyle = (completed: boolean): React.CSSProperties => ({
     width: "6px",
     height: "6px",
     borderRadius: "50%",
@@ -475,7 +475,7 @@ export default function CalendarPage() {
     transition: "all 0.2s",
   };
 
-  const taskCheckboxStyle: React.CSSProperties = (checked: boolean) => ({
+  const taskCheckboxStyle = (checked: boolean): React.CSSProperties => ({
     width: "20px",
     height: "20px",
     borderRadius: "6px",
@@ -494,7 +494,7 @@ export default function CalendarPage() {
     minWidth: 0,
   };
 
-  const taskTitleStyle: React.CSSProperties = (completed: boolean) => ({
+  const taskTitleStyle = (completed: boolean): React.CSSProperties => ({
     fontSize: "14px",
     fontWeight: "500",
     color: completed ? "#94a3b8" : "#0a1628",
@@ -616,7 +616,7 @@ export default function CalendarPage() {
     marginBottom: "8px",
   };
 
-  const buttonStyle: React.CSSProperties = (variant: "primary" | "secondary") => ({
+  const buttonStyle = (variant: "primary" | "secondary"): React.CSSProperties => ({
     padding: "12px 24px",
     fontSize: "14px",
     fontWeight: "600",

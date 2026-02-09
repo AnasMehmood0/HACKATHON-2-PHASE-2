@@ -321,7 +321,7 @@ export default function DashboardPage() {
     marginBottom: "16px",
   };
 
-  const statIconStyle: React.CSSProperties = (bg: string, color: string) => ({
+  const statIconStyle = (bg: string, color: string): React.CSSProperties => ({
     width: "48px",
     height: "48px",
     borderRadius: "12px",
@@ -397,7 +397,7 @@ export default function DashboardPage() {
     borderBottom: "1px solid #f1f5f9",
   };
 
-  const filterButtonStyle: React.CSSProperties = (isActive: boolean) => ({
+  const filterButtonStyle = (isActive: boolean): React.CSSProperties => ({
     padding: "8px 16px",
     fontSize: "13px",
     fontWeight: "500",
@@ -418,7 +418,7 @@ export default function DashboardPage() {
     transition: "all 0.2s",
   };
 
-  const taskCheckboxStyle: React.CSSProperties = (checked: boolean) => ({
+  const taskCheckboxStyle = (checked: boolean): React.CSSProperties => ({
     width: "22px",
     height: "22px",
     borderRadius: "6px",
@@ -437,7 +437,7 @@ export default function DashboardPage() {
     minWidth: 0,
   };
 
-  const taskTitleStyle: React.CSSProperties = (completed: boolean) => ({
+  const taskTitleStyle = (completed: boolean): React.CSSProperties => ({
     fontSize: "15px",
     fontWeight: "500",
     color: completed ? "#94a3b8" : "#0a1628",
@@ -550,7 +550,7 @@ export default function DashboardPage() {
     marginBottom: "8px",
   };
 
-  const buttonStyle: React.CSSProperties = (variant: "primary" | "secondary") => ({
+  const buttonStyle = (variant: "primary" | "secondary"): React.CSSProperties => ({
     padding: "12px 24px",
     fontSize: "14px",
     fontWeight: "600",

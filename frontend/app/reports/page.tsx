@@ -334,7 +334,7 @@ export default function ReportsPage() {
     gap: "8px",
   };
 
-  const filterButtonStyle: React.CSSProperties = (isActive: boolean) => ({
+  const filterButtonStyle = (isActive: boolean): React.CSSProperties => ({
     padding: "8px 16px",
     fontSize: "13px",
     fontWeight: "500",
@@ -369,7 +369,7 @@ export default function ReportsPage() {
     marginBottom: "12px",
   };
 
-  const statIconStyle: React.CSSProperties = (bg: string) => ({
+  const statIconStyle = (bg: string): React.CSSProperties => ({
     width: "40px",
     height: "40px",
     borderRadius: "10px",
@@ -394,7 +394,7 @@ export default function ReportsPage() {
     margin: "4px 0",
   };
 
-  const statChangeStyle: React.CSSProperties = (positive: boolean) => ({
+  const statChangeStyle = (positive: boolean): React.CSSProperties => ({
     display: "flex",
     alignItems: "center",
     gap: "4px",
@@ -441,7 +441,7 @@ export default function ReportsPage() {
     margin: "20px auto",
   };
 
-  const gaugeArcStyle: React.CSSProperties = (percentage: number) => ({
+  const gaugeArcStyle = (percentage: number): React.CSSProperties => ({
     position: "absolute",
     width: "200px",
     height: "200px",
@@ -516,7 +516,7 @@ export default function ReportsPage() {
     gap: "8px",
   };
 
-  const barStyle: React.CSSProperties = (height: number, color: string) => ({
+  const barStyle = (height: number, color: string): React.CSSProperties => ({
     width: "100%",
     height: `${height}%`,
     backgroundColor: color,

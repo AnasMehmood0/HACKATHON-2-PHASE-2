@@ -376,7 +376,7 @@ export default function TasksPage() {
     marginRight: "4px",
   };
 
-  const filterButtonStyle: React.CSSProperties = (isActive: boolean) => ({
+  const filterButtonStyle = (isActive: boolean): React.CSSProperties => ({
     padding: "8px 16px",
     fontSize: "13px",
     fontWeight: "500",
@@ -417,7 +417,7 @@ export default function TasksPage() {
     transition: "all 0.2s",
   };
 
-  const taskCheckboxStyle: React.CSSProperties = (checked: boolean) => ({
+  const taskCheckboxStyle = (checked: boolean): React.CSSProperties => ({
     width: "22px",
     height: "22px",
     borderRadius: "6px",
@@ -436,7 +436,7 @@ export default function TasksPage() {
     minWidth: 0,
   };
 
-  const taskTitleStyle: React.CSSProperties = (completed: boolean) => ({
+  const taskTitleStyle = (completed: boolean): React.CSSProperties => ({
     fontSize: "15px",
     fontWeight: "500",
     color: completed ? "#94a3b8" : "#0a1628",
@@ -573,7 +573,7 @@ export default function TasksPage() {
     marginBottom: "8px",
   };
 
-  const buttonStyle: React.CSSProperties = (variant: "primary" | "secondary") => ({
+  const buttonStyle = (variant: "primary" | "secondary"): React.CSSProperties => ({
     padding: "12px 24px",
     fontSize: "14px",
     fontWeight: "600",
