@@ -19,7 +19,7 @@ class ChatService:
         # Supports GEMINI_API_KEY or OPENAI_API_KEY (for compatibility)
         api_key = os.getenv("GEMINI_API_KEY") or os.getenv("OPENAI_API_KEY", "dev-key-placeholder")
         genai.configure(api_key=api_key)
-        self.model = genai.GenerativeModel("gemini-2.0-flash-exp")
+        self.model = genai.GenerativeModel("gemini-2.5-flash")
 
         # System prompt for the AI agent
         self.system_prompt = """You are a helpful Todo assistant. You can help users manage their tasks through natural language.
