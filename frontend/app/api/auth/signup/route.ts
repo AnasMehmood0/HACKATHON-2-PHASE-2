@@ -6,13 +6,22 @@ const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
 
 export async function POST(request: NextRequest) {
   try {
+    console.log('[Signup] Environment check:', {
+      NODE_ENV: process.env.NODE_ENV,
+      NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+      BACKEND_URL
+    });
+
     const body = await request.json();
     const { email, password, name } = body;
 
     // Call backend signup endpoint
     const res = await fetch(`${BACKEND_URL}/api/auth/signup`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "Origin": request.nextUrl.origin
+      },
       body: JSON.stringify({ email, password, name }),
     });
 
