@@ -2,7 +2,7 @@
 
 import { NextRequest, NextResponse } from "next/server";
 
-const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
+const BACKEND_URL = "https://anas-khan09-todo-backend.hf.space";
 
 export async function GET(request: NextRequest) {
   try {
@@ -43,6 +43,8 @@ export async function POST(request: NextRequest) {
     const sessionToken = request.cookies.get("session")?.value;
     const body = await request.json();
 
+    console.log('[Tasks POST] Creating task with session:', sessionToken ? 'yes' : 'no');
+
     const res = await fetch(`${BACKEND_URL}/api/tasks`, {
       method: "POST",
       headers: {
@@ -52,8 +54,11 @@ export async function POST(request: NextRequest) {
       body: JSON.stringify(body),
     });
 
+    console.log('[Tasks POST] Response status:', res.status);
+
     if (!res.ok) {
       const error = await res.json().catch(() => ({ detail: res.statusText }));
+      console.error('[Tasks POST] Error:', error);
       return NextResponse.json(error, { status: res.status });
     }
 
